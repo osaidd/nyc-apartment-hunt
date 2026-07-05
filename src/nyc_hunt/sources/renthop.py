@@ -1,8 +1,10 @@
 """RentHop NYC search — cards carry data-listing-id; parse each card block leniently.
+Titles/neighborhoods are HTML-unescaped before storage.
 
 RentHop often sits behind a Cloudflare challenge for non-browser clients; when
 that happens fetch() raises and the caller reports the source as blocked.
 """
+import html as html_mod
 import re
 from urllib.parse import urlencode
 
@@ -43,9 +45,9 @@ def parse(html: str, search_type: str) -> list[Listing]:
         out.append(Listing(
             url=url, source="renthop", search_type=search_type,
             price=int(p.group(1).replace(",", "")),
-            address=title_m.group(1).strip() if title_m else "",
+            address=html_mod.unescape(title_m.group(1).strip()) if title_m else "",
             beds=beds, baths=float(baths_m.group(1)) if baths_m else None,
-            neighborhood=hood_m.group(1).strip() if hood_m else "",
+            neighborhood=html_mod.unescape(hood_m.group(1).strip()) if hood_m else "",
             no_fee="no fee" in block.lower()))
     return out
 

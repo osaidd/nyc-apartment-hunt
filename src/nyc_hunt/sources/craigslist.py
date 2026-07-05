@@ -1,4 +1,5 @@
 """Craigslist Manhattan apartments — parses the static no-JS results Craigslist ships."""
+import html as html_mod
 import re
 from urllib.parse import urlencode
 
@@ -23,11 +24,11 @@ def search_url(s: Search) -> str:
 def parse(html: str, search_type: str) -> list[Listing]:
     out = []
     for m in ITEM_RE.finditer(html):
-        title = m.group("title")
+        title = html_mod.unescape(m.group("title"))
         out.append(Listing(
             url=m.group("url").split("?")[0], source="craigslist", search_type=search_type,
             price=int(m.group("price").replace(",", "")), address=title,
-            neighborhood=m.group("loc"), no_fee="no fee" in title.lower()))
+            neighborhood=html_mod.unescape(m.group("loc")), no_fee="no fee" in title.lower()))
     return out
 
 

@@ -1,0 +1,35 @@
+# nyc-apartment-hunt — copy to config.toml and edit. Everything is a knob; nothing is hardcoded.
+
+[hunt]
+city = "nyc"
+move_in = "2026-09-01"          # target move-in date (YYYY-MM-DD); listings ±3 weeks score best
+no_fee_preferred = true
+commute_anchor = "One Manhattan West, New York, NY"
+
+# One [[search]] block per apartment type you want. Delete or add blocks freely.
+[[search]]
+name = "studio_1br"
+max_price = 3600
+beds_min = 0
+beds_max = 1
+baths_min = 1
+
+[[search]]
+name = "2br_2ba"
+max_price = 5000
+beds_min = 2
+beds_max = 2
+baths_min = 2
+
+[areas]
+# tier1 neighborhoods score HIGH, tier2 score MEDIUM; anything else = LOW.
+tier1 = ["Chelsea", "Hell's Kitchen", "Midtown West", "Hudson Yards", "West Village", "Greenwich Village", "Flatiron", "NoMad", "Murray Hill", "Kips Bay", "Gramercy"]
+tier2 = ["East Village", "Lower East Side", "Upper West Side", "Upper East Side", "Financial District", "Tribeca", "SoHo", "Harlem (south)"]
+
+[email]
+enabled = false
+to = "you@example.com"
+smtp_host = "smtp.gmail.com"
+smtp_port = 587
+smtp_user = "you@example.com"
+# password from env NYC_HUNT_SMTP_PASS, never in config
